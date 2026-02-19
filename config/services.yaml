@@ -19,5 +19,13 @@ services:
     App\:
         resource: '../src/'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # Carrier strategies with tags for auto-collection
+    App\Shipping\Strategy\:
+        resource: '../src/Shipping/Strategy/'
+        tags:
+            - 'app.shipping_strategy'
+
+    # ShippingCalculator with auto-collected strategies
+    App\Shipping\Service\ShippingCalculator:
+        arguments:
+            $strategies: !tagged_iterator app.shipping_strategy
